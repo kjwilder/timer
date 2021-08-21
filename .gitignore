@@ -1,3 +1,6 @@
+timertest
+*.dSYM
+
 # Prerequisites
 *.d
 
