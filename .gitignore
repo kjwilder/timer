@@ -1,4 +1,4 @@
-timertest
+bazel*
 *.dSYM
 
 # Prerequisites
