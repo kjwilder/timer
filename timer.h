@@ -4,6 +4,7 @@
 #include <chrono>
 #include <iostream>
 #include <iomanip>
+#include <string>
 
 class timer {
   friend std::ostream& operator<<(std::ostream& os, timer& t);
@@ -18,10 +19,10 @@ class timer {
  public:
   timer() : running(false), start_time(), acc_time(0.0) { }
 
-  void start(const char* msg = 0);
-  void restart(const char* msg = 0);
-  void stop(const char* msg = 0);
-  void check(const char* msg = 0);
+  void start(const std::string& msg = "");
+  void restart(const std::string& msg = "");
+  void stop(const std::string& msg = "");
+  void check(const std::string& msg = "");
 
   double elapsed_time();
 };
@@ -45,9 +46,9 @@ inline double timer::elapsed_time() {
 //===========================================================================
 // Start the timer if it is not already running.  Print an optional message.
 
-inline void timer::start(const char* msg) {
+inline void timer::start(const std::string& msg) {
   // Print an optional message, something like "Starting timer t";
-  if (msg) {
+  if (!msg.empty()) {
     std::cout << msg << std::endl;
   }
   if (!running) {
@@ -60,9 +61,9 @@ inline void timer::start(const char* msg) {
 // Reset the accumulated time and start the timer.
 // Print an optional message.
 
-inline void timer::restart(const char* msg) {
+inline void timer::restart(const std::string& msg) {
   // Print an optional message, something like "Restarting timer t";
-  if (msg) {
+  if (!msg.empty()) {
     std::cout << msg << std::endl;
   }
 
@@ -75,9 +76,9 @@ inline void timer::restart(const char* msg) {
 //===========================================================================
 // Stop the timer and print an optional message.
 
-inline void timer::stop(const char* msg) {
+inline void timer::stop(const std::string& msg) {
   // Print an optional message, something like "Stopping timer t";
-  if (msg) {
+  if (!msg.empty()) {
     std::cout << msg << std::endl;
   }
 
@@ -91,9 +92,11 @@ inline void timer::stop(const char* msg) {
 //===========================================================================
 // Print out an optional message followed by the current timer timing.
 
-inline void timer::check(const char* msg) {
+inline void timer::check(const std::string& msg) {
   // Print an optional message, something like "Checking timer t";
-  if (msg) std::cout << msg << " : ";
+  if (!msg.empty()) {
+    std::cout << msg << " : ";
+  }
 
   std::cout << "Elapsed time [" << std::setiosflags(std::ios::fixed)
             << std::setprecision(2)
