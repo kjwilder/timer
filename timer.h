@@ -32,7 +32,9 @@ class timer {
 // state since it was last "started" or "restarted".
 
 inline double timer::elapsed_time_since_last_start() {
-  return (std::chrono::system_clock::now() - start_time).count() / 1e6;
+  using period = std::chrono::system_clock::duration::period;
+  return (std::chrono::system_clock::now() - start_time).count() *
+    period::num / static_cast<double>(period::den);
 }
 
 //===========================================================================
