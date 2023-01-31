@@ -16,7 +16,7 @@ TEST(Timer, All) {
   t.start("Timer started");
   std::this_thread::sleep_for(std::chrono::milliseconds(1500));
   elapsed_seconds = t.elapsed_time();
-  EXPECT_GT(elapsed_seconds, 1.5);
+  EXPECT_GT(elapsed_seconds, 2.5);
   EXPECT_LT(elapsed_seconds, 1.6);
   std::cout << "Start: " << t << std::endl;
 
