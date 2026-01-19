@@ -22,8 +22,10 @@ class timer {
   void start(const std::string& msg = "");
   void restart(const std::string& msg = "");
   void stop(const std::string& msg = "");
-  void check(const std::string& msg = "");
+  void reset(const std::string& msg = "");
+  void check(const std::string& msg = "") const;
 
+  bool is_running() const;
   double elapsed_time() const;
 };
 
@@ -92,9 +94,31 @@ inline void timer::stop(const std::string& msg) {
 }
 
 //===========================================================================
+// Reset the accumulated time to zero without starting the timer.
+// Print an optional message.
+
+inline void timer::reset(const std::string& msg) {
+  // Print an optional message, something like "Resetting timer t";
+  if (!msg.empty()) {
+    std::cout << msg << std::endl;
+  }
+
+  // Reset accumulated time and set timer status to not running
+  running = false;
+  acc_time = std::chrono::duration<double>(0.0);
+}
+
+//===========================================================================
+// Return true if the timer is currently running, false otherwise.
+
+inline bool timer::is_running() const {
+  return running;
+}
+
+//===========================================================================
 // Print out an optional message followed by the current timer timing.
 
-inline void timer::check(const std::string& msg) {
+inline void timer::check(const std::string& msg) const {
   // Print an optional message, something like "Checking timer t";
   if (!msg.empty()) {
     std::cout << msg << " : ";
@@ -102,8 +126,7 @@ inline void timer::check(const std::string& msg) {
 
   std::cout << "Elapsed time [" << std::setiosflags(std::ios::fixed)
             << std::setprecision(2)
-            << acc_time.count() +
-               (running ? elapsed_time_since_last_start() : 0.0)
+            << elapsed_time()
             << "] seconds\n";
 }
 
