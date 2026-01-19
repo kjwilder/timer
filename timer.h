@@ -7,14 +7,14 @@
 #include <string>
 
 class timer {
-  friend std::ostream& operator<<(std::ostream& os, timer& t);
+  friend std::ostream& operator<<(std::ostream& os, const timer& t);
 
  private:
   bool running;
   std::chrono::time_point<std::chrono::system_clock> start_time;
   std::chrono::duration<double> acc_time;
 
-  double elapsed_time_since_last_start();
+  double elapsed_time_since_last_start() const;
 
  public:
   timer() : running(false), start_time(), acc_time(0.0) { }
@@ -24,14 +24,14 @@ class timer {
   void stop(const std::string& msg = "");
   void check(const std::string& msg = "");
 
-  double elapsed_time();
+  double elapsed_time() const;
 };
 
 //===========================================================================
 // Return the total time that the timer has been in the "running"
 // state since it was last "started" or "restarted".
 
-inline double timer::elapsed_time_since_last_start() {
+inline double timer::elapsed_time_since_last_start() const {
   using period = std::chrono::system_clock::duration::period;
   return (std::chrono::system_clock::now() - start_time).count() *
     period::num / static_cast<double>(period::den);
@@ -40,7 +40,7 @@ inline double timer::elapsed_time_since_last_start() {
 //===========================================================================
 // Return the total time the timer has been in the "running" state.
 
-inline double timer::elapsed_time() {
+inline double timer::elapsed_time() const {
   return (acc_time.count() +
     (running ? elapsed_time_since_last_start() : 0.0));
 }
@@ -112,7 +112,7 @@ inline void timer::check(const std::string& msg) {
 // for an ostream 'os' and a timer 't'.  For example, "cout << t" will
 // print out the total amount of time 't' has been "running".
 
-inline std::ostream& operator<<(std::ostream& os, timer& t) {
+inline std::ostream& operator<<(std::ostream& os, const timer& t) {
   os << std::setprecision(2) << std::setiosflags(std::ios::fixed)
     << t.elapsed_time();
   return os;
